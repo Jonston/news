@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::prefix('cabinet')->group(function () {
+    Route::resource('/posts', PostController::class)->only('index');
+    Route::resource('/profiles', ProfileController::class)->only(['edit', 'update', 'destroy']);
+})->name('cabinet.');
+
+Route::prefix('admin')->group(function () {
+    Route::resource('/posts', PostController::class)->except('show');
+})->name('admin.');
