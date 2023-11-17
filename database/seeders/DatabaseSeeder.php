@@ -4,19 +4,31 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     * @throws \Throwable
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        //Transaction
+        $this->command->info('Seeding database...');
+        DB::beginTransaction();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        try {
+            $this->call(RolesSeeder::class);
+            $this->call(UserSeeder::class);
+            $this->call(PostsSeeder::class);
+        } catch (\Throwable $error) {
+            DB::rollBack();
+
+            throw $error;
+        }
+
+        DB::commit();
+        $this->command->info('Seeding database completed');
     }
 }
