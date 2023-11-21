@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as ImageIntervention;
@@ -32,15 +33,20 @@ class ImageService
     /**
      * Save an image to storage.
      *
-     * @param ImageIntervention $image
+     * @param ImageIntervention|UploadedFile $image
      * @param string $path
+     * @param bool $tmp
      * @return ImageModel
      */
-    public function create(ImageIntervention $image, string $path, bool $tmp = false): ImageModel
+    public function create(ImageIntervention|UploadedFile $image, string $path, bool $tmp = false): ImageModel
     {
         $path = trim($path, '/') . '/' . uniqid(more_entropy: true) . '.jpg';
 
-        Storage::disk('public')->put($path, $image);
+        if ($image instanceof UploadedFile) {
+            $image->storeAs('public', $path);
+        } else {
+            Storage::disk('public')->put($path, $image);
+        }
 
         $name = basename($path);
 

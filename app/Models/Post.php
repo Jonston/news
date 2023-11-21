@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -31,9 +32,11 @@ class Post extends Model
     protected static function booted(): void
     {
         static::deleting(function (Post $post) {
-            $post->previews()->each(function (Image $image) {
-                $image->delete();
-            });
+            if ($post->isForceDeleting()) {
+                $post->previews()->each(function (Image $image) {
+                    $image->delete();
+                });
+            }
         });
     }
 
@@ -59,7 +62,7 @@ class Post extends Model
     public function preview(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->previews->first(),
+            get: fn() => $this->previews->first(),
         );
     }
 
