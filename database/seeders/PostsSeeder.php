@@ -20,7 +20,7 @@ class PostsSeeder extends Seeder
      */
     public function run(): void
     {
-        $amount = 1;
+        $amount = 30;
 
         $this->command->info('Seeding posts...');
         $this->command->newLine();
