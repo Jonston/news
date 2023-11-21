@@ -57,6 +57,7 @@
     @endforeach
     </tbody>
 </table>
+@include('common.pagination', ['paginator' => $posts])
 @endsection
 @section('scripts')
     <script type="text/javascript">
