@@ -9,3 +9,6 @@ This is a news project using the laravel framework.
 6. 6Run seeds ```php artisan db:seed```
 7. Run the server ```php artisan serve```
 8. Enjoy!
+### Demo users
+1. Admin: login: admin@admin.admin password: admin
+2. Customer: login: customer@customer.customer password: customer
