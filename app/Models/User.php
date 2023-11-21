@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,7 +14,18 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        static::deleting(function (User $user) {
+            if ( ! $user->isForceDeleting()) {
+                return;
+            }
+
+            $user->images()->each(fn(Image $image) => $image->delete());
+        });
+    }
 
     /**
      * The attributes that are mass assignable.

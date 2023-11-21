@@ -3,7 +3,7 @@
     @method($method)
     <div class="row">
         <div class="col-md-6">
-            <div class="preview bg-light border mb-3">
+            <div class="preview bg-light border">
                 @if($profile && $profile->avatar)
                     <img id="image" src="{{ $profile->avatar->url }}" alt="preview" />
                 @else
