@@ -1,0 +1,19 @@
+.table.post-list {
+    td {
+        vertical-align: middle;
+    }
+    .post-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .post-date {
+        font-size: 0.8rem;
+        color: #999;
+    }
+    .post-actions {
+        text-align: right;
+        button {
+            margin-left: 0.5rem;
+        }
+    }
+}
