@@ -32,8 +32,18 @@
                 @endif
             </div>
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember">
-                <label name="remember" class="form-check-label" for="remember">remember</label>
+                <input name="remember"
+                       type="checkbox"
+                       class="form-check-input @if($errors->has('remember')) is-invalid @endif"
+                       id="remember"
+                       value="1"
+                >
+                <label class="form-check-label" for="remember">remember</label>
+                @if($errors->has('remember'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('remember') }}
+                    </div>
+                @endif
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
