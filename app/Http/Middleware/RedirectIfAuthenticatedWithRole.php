@@ -19,7 +19,7 @@ class RedirectIfAuthenticatedWithRole
         if (Auth::check()) {
             if (Auth::user()->hasRole('admin')) {
                 return redirect()->route('admin.posts.index');
-            } elseif (Auth::user()->hasRole('user')) {
+            } elseif (Auth::user()->hasRole('customer')) {
                 return redirect()->route('cabinet.posts.index');
             }
         }

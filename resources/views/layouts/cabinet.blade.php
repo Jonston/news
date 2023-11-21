@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @vite('resources/css/app.css')
+    @include('cabinet.navbar')
+    <div class="container-fluid p-4">
+        @yield('content')
+    </div>
 </head>
 <body>
 @vite('resources/js/app.js')

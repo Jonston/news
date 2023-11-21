@@ -1,3 +1,8 @@
 @import "bootstrap";
+@import 'material-icons/iconfont/material-icons.css';
 
+@import "./base.scss";
 @import "./auth/login-form.scss";
+@import "./posts/post-list.scss";
+@import "./posts/post-form.scss";
+

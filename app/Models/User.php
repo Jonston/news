@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,4 +45,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected $appends = [
+        'avatar',
+    ];
+
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(Image::class, 'user_image', 'user_id', 'image_id');
+    }
+
+    public function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->images()->first(),
+        );
+    }
 }

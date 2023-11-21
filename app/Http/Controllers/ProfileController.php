@@ -2,64 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\ProfileService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected ProfileService $profileService;
+    public function __construct(ProfileService $profileService)
     {
-        dd('ProfileController@index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        dd('ProfileController@create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        dd('ProfileController@store');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        dd('ProfileController@show');
+        $this->profileService = $profileService;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $profile): View
     {
-        dd('ProfileController@edit');
+        return view('profile.edit', [
+            'profile' => $profile,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param ProfileRequest $request
+     * @param User $profile
+     * @return RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(ProfileRequest $request, User $profile): RedirectResponse
     {
-        dd('ProfileController@update');
+        $this->profileService->update($profile, $request->validated(), $request->file('avatar'));
+
+        return redirect()->route('cabinet.profiles.edit', $profile);
     }
 
     /**
      * Remove the specified resource from storage.
+     * @param User $user
+     * @return RedirectResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
-        dd('ProfileController@destroy');
+        $user->delete();
+
+        return redirect()->route('home')->with('success', 'User deleted.');
     }
 }

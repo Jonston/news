@@ -41,4 +41,20 @@ class AuthController extends Controller
             'password' => 'Invalid credentials',
         ]);
     }
+
+    /**
+     * Logout user
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        auth()->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login-form');
+    }
 }
